@@ -112,8 +112,8 @@ func main() {
 
 	if (buildResp.Status == "200 OK") {
 		buildResp.Body.Close() // close the connection once this function finishes
-		fmt.Println("Build trigger sent, \"" + planId + "\" will start building momentarily.")
+		fmt.Println("Build trigger sent. The \"" + planId + "\" plan will start building momentarily.")
 	} else {
-		fmt.Println("Build trigger was not sent. Response:", buildResp.Status)
+		fmt.Println("Build trigger could not be sent. Response:", buildResp.Status)
 	}
 }
