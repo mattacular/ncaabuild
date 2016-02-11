@@ -62,8 +62,9 @@ func main() {
 	case "qa":
 	case "dev":
 		break
+	case "falcon":
+		planId = "MML-DESKTOP" 
 	default:
-		buildEnv = "qa"
 		planId = "barcelona-qa"
 	}
 
