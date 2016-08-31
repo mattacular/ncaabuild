@@ -6,10 +6,10 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
-	"os"
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"os"
 )
 
 var (
@@ -45,7 +45,7 @@ func main() {
 	flag.Parse()
 	applyEnvOptions()
 
-	if (username == "" || password == "") {
+	if username == "" || password == "" {
 		fmt.Println("You must provide a NCAA Bamboo5 username and password, either by setting environment variables \"NCAA_BARCA_BAMBOO_USER\" and \"NCAA_BARCA_BAMBOO_PASS\" or by passing these values as option flags \"--user\" and \"--pass\"")
 		return
 	}
@@ -63,9 +63,13 @@ func main() {
 	case "dev":
 		break
 	case "falcon":
-		planId = "MML-DESKTOP" 
+		planId = "MML-DESKTOP"
+		break
+	case "gilfoyle":
+		planId = "MML-GIL"
+		break
 	default:
-		planId = "barcelona-qa"
+		planId = "barcelona-qa2"
 	}
 
 	// set up the GET request to check if the plan is already running
@@ -103,7 +107,7 @@ func main() {
 	buildReq, _ := http.NewRequest("POST", reqUrl, bytes.NewBufferString(postData.Encode()))
 	credentials := []byte(username + ":" + password)
 	buildReq.Header.Add("Content-Type", "application/x-www-form-urlencoded")
-	buildReq.Header.Add("Authorization", "Basic " + base64.StdEncoding.EncodeToString(credentials))
+	buildReq.Header.Add("Authorization", "Basic "+base64.StdEncoding.EncodeToString(credentials))
 
 	buildResp, buildErr := client.Do(buildReq)
 
@@ -111,7 +115,7 @@ func main() {
 		panic(err)
 	}
 
-	if (buildResp.Status == "200 OK") {
+	if buildResp.Status == "200 OK" {
 		buildResp.Body.Close() // close the connection once this function finishes
 		fmt.Println("Build trigger sent. The \"" + planId + "\" plan will start building momentarily.")
 	} else {
